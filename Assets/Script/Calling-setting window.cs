@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SettingsToggle : MonoBehaviour
 {
-    public GameObject settingsPanel; // Assign your settings panel here in the inspector
+    public GameObject settingsPanel; 
 
     public void ToggleSettings()
     {

@@ -2,42 +2,33 @@ using UnityEngine;
 
 public class UISceneController : MonoBehaviour
 {
-    public RectTransform[] backgrounds; // Array of the moving backgrounds
-    public float speed = 1.0f; // Speed at which the backgrounds move
-    public float backgroundWidth; // Width of the background images
-
-    private Vector2[] originalPositions;
-
-    void Start()
-    {
-        // Initialize the originalPositions array with the same length as backgrounds
-        originalPositions = new Vector2[backgrounds.Length];
-
-        // Store the original position of each background
-        for (int i = 0; i < backgrounds.Length; i++)
-        {
-            originalPositions[i] = backgrounds[i].anchoredPosition;
-        }
-    }
+    public RectTransform[] backgrounds;
+    public float speed = 5.0f;
+    public float backgroundWidth = 871.8356f; // Set this value based on your background image's width
 
     void Update()
     {
         // Move each background
         for (int i = 0; i < backgrounds.Length; i++)
         {
-            MoveBackground(backgrounds[i], originalPositions[i]);
+            MoveBackground(backgrounds[i]);
         }
     }
 
-    void MoveBackground(RectTransform background, Vector2 originalPosition)
+    void MoveBackground(RectTransform background)
     {
-        Vector2 newPosition = background.anchoredPosition + new Vector2(-speed, 0) * Time.deltaTime;
-        background.anchoredPosition = newPosition;
+        // Calculate the new position
+        float newX = background.anchoredPosition.x - (speed * Time.deltaTime);
+        background.anchoredPosition = new Vector2(newX, background.anchoredPosition.y);
 
-        // If the background has moved off-screen, reset its position to the right to create a looping effect
+        // If the background is fully off the screen to the left, move it to the right
         if (background.anchoredPosition.x <= -backgroundWidth)
         {
-            background.anchoredPosition = originalPosition;
+            Vector2 newPosition = new Vector2(
+                background.anchoredPosition.x + 2 * backgroundWidth,
+                background.anchoredPosition.y
+            );
+            background.anchoredPosition = newPosition;
         }
     }
 }
